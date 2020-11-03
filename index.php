@@ -3,8 +3,7 @@
 // include database connection
 include('connect-db.php');
 
-// Display All Books
-// write query for all user information
+// write query for all books
 $sql = "SELECT id, title, author, genre, pic_name FROM books";
 
 // make the query and get results
@@ -18,6 +17,23 @@ mysqli_free_result($result);
 
 // close connection
 mysqli_close($connect);
+
+function displaybook($book)
+{
+    echo $book['title'] . '</br>';
+    echo $book['author'] . '</br>';
+    echo $book['genre'] . '</br>';
+}
+
+// Search and select the book that is looked up and replace other books on the screen
+if (isset($_POST['search'])) {
+    foreach ($books as $book) {
+        if (strtolower($_POST['search-bar']) == strtolower($book['title'])) { }
+    }
+}
+
+
+
 
 
 
@@ -66,7 +82,7 @@ mysqli_close($connect);
 
     <!-- Display all books -->
     <div class="container row">
-    <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
+        <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
         <?php foreach ($books as $book) { ?>
             <div id="each-book" class="py-2 col">
@@ -76,13 +92,18 @@ mysqli_close($connect);
                         echo $book['title'] . '</br>';
                         echo $book['author'] . '</br>';
                         echo $book['genre'] . '</br>';
-                    ?>
+                        ?>
+                    
                 </div>
+
             </div>
 
-
-
         <?php } ?>
+
+    </div>
+
+
+
     </div>
 </body>
 
