@@ -15,27 +15,22 @@ $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
 // free result
 mysqli_free_result($result);
 
-// close connection
-mysqli_close($connect);
-
-function displaybook($book)
-{
-    echo $book['title'] . '</br>';
-    echo $book['author'] . '</br>';
-    echo $book['genre'] . '</br>';
-}
 
 // Search and select the book that is looked up and replace other books on the screen
 if (isset($_POST['search'])) {
-    foreach ($books as $book) {
-        if (strtolower($_POST['search-bar']) == strtolower($book['title'])) { }
-    }
+
+    $search = $_POST['search-bar'];
+    $sql = "SELECT * FROM `books` WHERE title LIKE '%$search%'";
+
+    // make the query and get results
+    $result = mysqli_query($connect, $sql);
+
+    // fetch results as an array
+    $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-
-
-
-
+// close connection
+mysqli_close($connect);
 
 ?>
 
@@ -60,7 +55,7 @@ if (isset($_POST['search'])) {
 
         <!-- Items in the bar -->
         <ul class="navbar-nav">
-            <!-- Search for books and movies -->
+            <!-- Search for books -->
             <form action="index.php" method="POST">
                 <ul class="navbar-nav">
                     <li class="nav-item pl-5">
@@ -73,7 +68,7 @@ if (isset($_POST['search'])) {
 
             </form>
 
-            <!-- Login to checkout and save books and/or movies -->
+            <!-- Login to checkout and save books -->
             <li class="nav-item px-5">Login</li>
 
         </ul>
@@ -86,23 +81,17 @@ if (isset($_POST['search'])) {
 
         <?php foreach ($books as $book) { ?>
             <div id="each-book" class="py-2 col">
-
                 <div class="border p-3">
                     <?php
                         echo $book['title'] . '</br>';
                         echo $book['author'] . '</br>';
                         echo $book['genre'] . '</br>';
-                        ?>
-                    
+                    ?>
+                    <input id= "checkout" type="submit" name="checkout" value="Check Out">
                 </div>
-
             </div>
-
         <?php } ?>
-
     </div>
-
-
 
     </div>
 </body>

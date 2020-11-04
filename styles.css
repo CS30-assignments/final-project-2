@@ -1,11 +1,10 @@
 /* Stylesheet */
 .row{
-    width: 700px;
+    width: 800px;
 }
 .search-bar{
     width: 350px;
 }
-
 
 #more-info{
     font-size: 11px;
@@ -14,4 +13,10 @@
     border: 1px solid rgb(13, 139, 19);
     padding: 2px 5px;
     
+}
+
+#checkout{
+    font-size: 12px;
+    width: 90px;
+    background-color: rgb(255, 67, 67);
 }
