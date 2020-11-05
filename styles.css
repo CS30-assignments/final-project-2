@@ -18,5 +18,14 @@
 #checkout{
     font-size: 12px;
     width: 90px;
-    background-color: rgb(255, 67, 67);
+    background-color: rgb(162, 221, 167);
+    border: 1px solid black;
+    padding: 1px;
+}
+
+#login-div{
+    border-radius: 20px;
+    width: 500px;
+    padding: 30px 60px;
+    align-content: center;
 }
