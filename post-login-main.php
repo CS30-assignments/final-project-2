@@ -4,7 +4,7 @@
 include('connect-db.php');
 
 // write query for all books
-$sql = "SELECT id, title, author, genre, pic_name FROM books";
+$sql = "SELECT id, title, author, genre FROM books";
 
 // make the query and get results
 $result = mysqli_query($connect, $sql);
@@ -16,6 +16,8 @@ $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
 mysqli_free_result($result);
 
 
+
+
 // Search and select the book that is looked up and replace other books on the screen
 if (isset($_POST['search'])) {
 
@@ -25,7 +27,7 @@ if (isset($_POST['search'])) {
         $search = $_POST['search-bar'];
         $category = $_POST['category'];
 
-        $sql = "SELECT * FROM `books` WHERE $category LIKE '%$search%'";
+        $sql = "SELECT id, title, author, genre FROM `books` WHERE $category LIKE '%$search%'";
 
         // make the query and get results
         $result = mysqli_query($connect, $sql);
@@ -33,6 +35,25 @@ if (isset($_POST['search'])) {
         // fetch results as an array
         $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+}
+
+// say hello ------ when user logs in to page
+session_start();
+
+// log out of user sessions
+if (isset($_POST["log-out"])) {
+    session_unset();
+    header('Location: index.php');
+} else {
+    // $name = $_SESSION['name'];
+    $email = $_SESSION['email'];
+}
+
+$count = 0;
+// Check Out
+if (isset($_POST['checkout'])) {
+    echo "HELLOOO";
+    $count++;
 }
 
 // close connection
@@ -62,7 +83,7 @@ mysqli_close($connect);
         <!-- Items in the bar -->
         <ul class="navbar-nav">
             <!-- Search for books -->
-            <form action="index.php" method="POST">
+            <form action="post-login-main.php" method="POST">
 
                 <ul class="navbar-nav">
                     <!-- Category to search by -->
@@ -83,10 +104,20 @@ mysqli_close($connect);
 
             </form>
 
+            <li id="hello-name" class="nav-item pl-5">Hi <?php echo htmlspecialchars($email); ?>!</li>
+
             <!-- Login to checkout and save books -->
-            <form action="login.php" method="POST">
-                    <input class="login" type="submit" name="log-in" value="Log In">
+            <form action="#" method="POST">
+                <div class="px-5">
+                    <input class="logout" type="submit" name="log-out" value="Log Out">
+                </div>
+
             </form>
+
+            <ul>
+                <span><?php echo $count?></span>
+                <img src="book-images/checkout.png" alt="checkout" width="40px" height="40px">
+            </ul>
 
         </ul>
 
@@ -104,7 +135,12 @@ mysqli_close($connect);
                         echo $book['author'] . '</br>';
                         echo $book['genre'] . '</br>';
                         ?>
+                    <form action="#" method="POST">
+                        <input id="checkout" class="btn" type="submit" name="checkout" value="Check Out">
+
+                    </form>
                 </div>
+
             </div>
         <?php } ?>
     </div>

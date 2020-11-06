@@ -4,7 +4,7 @@
 include('connect-db.php');
 
 // initialize login variable
-$loginError = $errors = " ";
+$loginError = $errors = "";
 
 // write query for all user information
 $sql = "SELECT id, names, email, passwords FROM user_information";
@@ -23,11 +23,15 @@ mysqli_close($connect);
 
 // Login Validation
 if(isset($_POST['log-in'])){
-    
     // loop through user_information to check log in and password
     foreach ($user_information as $user) {
         if ($_POST['email'] == $user['email'] && $_POST['password'] == $user['passwords']) {
-            header('Location: index.php');
+            // start the session
+            session_start();
+            // $_SESSION['name'] = $user['names'];
+            $_SESSION['email'] = $user['email'];
+
+            header('Location: post-login-main.php');
         } elseif ($_POST['email'] != $user['email'] || $_POST['password'] != $user['passwords']) {
             // go to about page
             $loginError =  "Sorry, incorrect login. Try again. Email and password are case sensitive.";
