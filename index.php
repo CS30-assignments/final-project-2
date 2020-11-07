@@ -4,7 +4,7 @@
 include('connect-db.php');
 
 // write query for all books
-$sql = "SELECT id, title, author, genre, pic_name FROM books";
+$sql = "SELECT id, title, author, genre FROM books";
 
 // make the query and get results
 $result = mysqli_query($connect, $sql);
