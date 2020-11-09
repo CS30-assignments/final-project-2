@@ -4,7 +4,7 @@
 include('connect-db.php');
 
 // initialize variables
-$checked_out = $inserted = '';
+$checked_out = $inserted = $alphabetize = '';
 
 // write query for all books
 $sql = "SELECT id, title, author, genre FROM books";
@@ -74,9 +74,25 @@ if (isset($_POST['checkout'])) {
 }
 
 
+
+// Alphabetize the books when the button is clicked
+if (isset($_POST['alphabetize'])) {
+
+    $sql = "SELECT * FROM `books` ORDER BY `title`";
+
+    // make the query and get results
+    $result = mysqli_query($connect, $sql);
+
+    // fetch results as an array
+    $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // books have been alphabetized  
+    $alphabetize = "Books have been alphabetized!";
+}
+
+
 // close connection
 mysqli_close($connect);
-
 
 
 ?>
@@ -121,9 +137,7 @@ mysqli_close($connect);
                         <input class="btn bg-white" type="submit" name="search" value="Search">
                     </li>
 
-
                 </ul>
-
 
             </form>
 
@@ -146,13 +160,27 @@ mysqli_close($connect);
 
         </ul>
 
+
     </nav>
 
     <!-- Display all books -->
-    <div>
+    <div class="p-3">
         Browse your favourite books and check them out for fun reading! Or remove checkouts you're not interested in!
         Refresh the page to clear your searches.
     </div>
+
+    <!-- Alphabetize -->
+    <div class="alphabetize">
+        <form action="#" method="POST">
+            <input id="alpha" class = "btn" type="submit" name="alphabetize" value="Alphabetize">
+        </form>
+    </div>
+
+
+
+    <!-- books have been alphabetized -->
+    <p class="text-info px-5"><?php echo $alphabetize ?></p>
+    
     <div class="container row">
         <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
@@ -160,10 +188,10 @@ mysqli_close($connect);
             <div id="each-book" class="py-2 col">
                 <div class="border p-3">
                     <?php
-                    echo $book['title'] . '</br>';
-                    echo $book['author'] . '</br>';
-                    echo $book['genre'] . '</br>';
-                    ?>
+                        echo $book['title'] . '</br>';
+                        echo $book['author'] . '</br>';
+                        echo $book['genre'] . '</br>';
+                        ?>
                     <form action="#" method="POST">
                         <input type="hidden" name="check-out" value="<?php echo $book['id']; ?>">
                         <input id="checkout" class="btn" type="submit" name="checkout" value="Check Out">
@@ -173,6 +201,8 @@ mysqli_close($connect);
 
             </div>
         <?php } ?>
+
+
 
     </div>
 

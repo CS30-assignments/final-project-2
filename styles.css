@@ -45,3 +45,28 @@
 .login-background{
     background-color: rgb(185, 223, 188);
 }
+
+.alphabetize{
+    float: right;
+    padding-right: 70px;
+}
+
+#alpha{
+    background-color: rgb(186, 228, 186);
+}
+
+#login{
+    background-color: rgb(169, 221, 175);
+    border: 1px solid black;
+}
+
+#alpha_noLogin{
+    background-color: rgb(173, 214, 178);
+    border: 1px solid black;
+
+}
+
+.border-books{
+    border: 2px solid rgb(192, 224, 192);
+    padding: 10px;
+}

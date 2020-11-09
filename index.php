@@ -3,6 +3,8 @@
 // include database connection
 include('connect-db.php');
 
+// initialize variables 
+$alphabetize = ' ';
 // write query for all books
 $sql = "SELECT id, title, author, genre FROM books";
 
@@ -32,6 +34,21 @@ if (isset($_POST['search'])) {
         // fetch results as an array
         $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
     }
+}
+
+// Alphabetize the books when the button is clicked
+if (isset($_POST['alphabetize'])) {
+
+    $sql = "SELECT * FROM `books` ORDER BY `title`";
+
+    // make the query and get results
+    $result = mysqli_query($connect, $sql);
+
+    // fetch results as an array
+    $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+    // books have been alphabetized  
+    $alphabetize = "Books have been alphabetized!";
 }
 
 // close connection
@@ -84,30 +101,44 @@ mysqli_close($connect);
 
             <!-- Login to checkout and save books -->
             <form action="login.php" method="POST">
-                <input class="login" type="submit" name="log-in" value="Log In">
+                <input id="login" class="btn" type="submit" name="log-in" value="Log In">
             </form>
 
+            <li class="px-5">
+                <!-- Alphabetize -->
+                <div>
+                    <form action="#" method="POST">
+                        <input id="alpha_noLogin" class="btn" type="submit" name="alphabetize" value="Alphabetize">
+                    </form>
+                </div>
+            </li>
         </ul>
 
     </nav>
 
     <!-- Display all books -->
-    <div class="p-5">
-        Browse for your favourtie books! If you want to check them out, log in!
+    <div class="p-3">
+        Browse for your favourite books! If you want to check them out, log in!
         Refresh the page to clear your searches.
-
     </div>
+
+
+
+    <!-- books have been alphabetized -->
+    <p class="text-info px-5"><?php echo $alphabetize ?></p>
+
+
     <div class="container row">
         <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
         <?php foreach ($books as $book) { ?>
             <div id="each-book" class="py-2 col">
-                <div class="border p-3">
+                <div class="border-books">
                     <?php
-                    echo $book['title'] . '</br>';
-                    echo $book['author'] . '</br>';
-                    echo $book['genre'] . '</br>';
-                    ?>
+                        echo $book['title'] . '</br>';
+                        echo $book['author'] . '</br>';
+                        echo $book['genre'] . '</br>';
+                        ?>
                 </div>
             </div>
         <?php } ?>
