@@ -86,6 +86,8 @@ if (isset($_POST['alphabetize'])) {
     // fetch results as an array
     $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
+    
+
     // books have been alphabetized  
     $alphabetize = "Books have been alphabetized!";
 }
@@ -180,7 +182,7 @@ mysqli_close($connect);
 
     <!-- books have been alphabetized -->
     <p class="text-info px-5"><?php echo $alphabetize ?></p>
-    
+
     <div class="container row">
         <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
