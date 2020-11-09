@@ -7,25 +7,26 @@ include('connect-db.php');
 $loginError = $errors = "";
 
 // write query for all user information
-$sql = "SELECT id, names, email, passwords FROM user_information";
+$sql = "SELECT id, names, email, passwords FROM users";
 
 // make the query and get results
 $result = mysqli_query($connect, $sql);
 
 // fetch results as an array
-$user_information = mysqli_fetch_all($result, MYSQLI_ASSOC);
+$users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // free result
 mysqli_free_result($result);
 
-// close connection
-mysqli_close($connect);
+
 
 // Login Validation
-if(isset($_POST['log-in'])){
-    // loop through user_information to check log in and password
-    foreach ($user_information as $user) {
+if (isset($_POST['userLogIn'])) {
+    // // loop through users to check log in and password
+    foreach ($users as $user) {
         if ($_POST['email'] == $user['email'] && $_POST['password'] == $user['passwords']) {
+            echo "HELOO";
+
             // start the session
             session_start();
             // $_SESSION['name'] = $user['names'];
@@ -37,10 +38,10 @@ if(isset($_POST['log-in'])){
             $loginError =  "Sorry, incorrect login. Try again. Email and password are case sensitive.";
         }
     }
-
 }
 
-
+// close connection
+mysqli_close($connect);
 
 ?>
 
@@ -63,39 +64,31 @@ if(isset($_POST['log-in'])){
 
     </nav>
     <div class="p-5 col d-flex justify-content-center ">
-        <div id="login-div" class="container bg-light  float-left">
+        <div id="login-div" class="login-background">
 
             <!-- Log in Heading -->
             <h3 class="display 4">Log In</h3>
 
-            <form method="POST" class="pt-2">
+            <form action="#" method="POST" class="pt-2">
                 <label>Email:</label>
                 <!-- Enter in value  -->
                 <input type="text" name="email">
                 <br>
 
-                <label>Password:</label>
+                <label>Card Number:</label>
                 <!-- Enter in value  -->
                 <input type="password" name="password">
 
                 <br>
 
                 <!-- Submit Login -->
-                <input id="login-btn" class="btn-secondary" type="submit" name="log-in" value="Log In">
+                <input id="login-btn" class="btn-secondary" type="submit" name="userLogIn" value="Log In">
 
                 <!-- Error in the Login -->
                 <p class="pt-2 text-danger"></p>
             </form>
 
-
-            <!-- Sign up -->
-            <div>
-                <p class="text-secondary">Don't have a login?</p>
-                <a id="sign-up-link" class="nav-link" href="sign-up.php">Sign Up</a>
-            </div>
-
-
-
+            
         </div>
     </div>
 

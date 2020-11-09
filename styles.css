@@ -33,3 +33,15 @@
 .logout{
     background-color: rgb(207, 233, 183);
 }
+
+#remove{
+    font-size: 12px;
+    width: 90px;
+    background-color: rgb(221, 171, 162);
+    border: 1px solid black;
+    padding: 1px;
+}
+
+.login-background{
+    background-color: rgb(185, 223, 188);
+}

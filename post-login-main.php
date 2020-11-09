@@ -3,6 +3,9 @@
 // include database connection
 include('connect-db.php');
 
+// initialize variables
+$checked_out = $inserted = '';
+
 // write query for all books
 $sql = "SELECT id, title, author, genre FROM books";
 
@@ -14,8 +17,6 @@ $books = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // free result
 mysqli_free_result($result);
-
-
 
 
 // Search and select the book that is looked up and replace other books on the screen
@@ -37,7 +38,7 @@ if (isset($_POST['search'])) {
     }
 }
 
-// say hello ------ when user logs in to page
+// Session start, say hello!
 session_start();
 
 // log out of user sessions
@@ -49,15 +50,34 @@ if (isset($_POST["log-out"])) {
     $email = $_SESSION['email'];
 }
 
-$count = 0;
-// Check Out
+// if user clicks checkout, should move book info to checkout page
 if (isset($_POST['checkout'])) {
-    echo "HELLOOO";
-    $count++;
+    foreach ($books as $book) {
+        if ($book['id'] == $_POST['check-out']) {
+            $check_title = $book['title'];
+            $checked_out = "CHECKED OUT";
+            $book_id = $book['id'];
+
+
+            // insert checked out books into new table 
+            $sql = "INSERT INTO checked_out(id, title, author, genre) SELECT id, title, author, genre FROM books WHERE id = $book_id";
+
+            // save to database and then check
+            if (mysqli_query($connect, $sql)) {
+                echo $check_title . " " . $checked_out;
+                // header('Location: bookings.php');
+            } else {
+                echo "You've already checked this book out! Go to checkouts if you want to remove it.";
+            }
+        }
+    }
 }
+
 
 // close connection
 mysqli_close($connect);
+
+
 
 ?>
 
@@ -100,14 +120,17 @@ mysqli_close($connect);
                     <li class="nav-item pr-5">
                         <input class="btn bg-white" type="submit" name="search" value="Search">
                     </li>
+
+
                 </ul>
+
 
             </form>
 
             <li id="hello-name" class="nav-item pl-5">Hi <?php echo htmlspecialchars($email); ?>!</li>
 
             <!-- Login to checkout and save books -->
-            <form action="#" method="POST">
+            <form action="post-login-main.php" method="POST">
                 <div class="px-5">
                     <input class="logout" type="submit" name="log-out" value="Log Out">
                 </div>
@@ -115,8 +138,10 @@ mysqli_close($connect);
             </form>
 
             <ul>
-                <span><?php echo $count?></span>
-                <img src="book-images/checkout.png" alt="checkout" width="40px" height="40px">
+                <a href="checked-out.php">
+                    Checkouts:
+                    <img src="book-images/checkout.png" alt="checkout" width="40px" height="40px">
+                </a>
             </ul>
 
         </ul>
@@ -124,6 +149,10 @@ mysqli_close($connect);
     </nav>
 
     <!-- Display all books -->
+    <div>
+        Browse your favourite books and check them out for fun reading! Or remove checkouts you're not interested in!
+        Refresh the page to clear your searches.
+    </div>
     <div class="container row">
         <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
@@ -131,19 +160,23 @@ mysqli_close($connect);
             <div id="each-book" class="py-2 col">
                 <div class="border p-3">
                     <?php
-                        echo $book['title'] . '</br>';
-                        echo $book['author'] . '</br>';
-                        echo $book['genre'] . '</br>';
-                        ?>
+                    echo $book['title'] . '</br>';
+                    echo $book['author'] . '</br>';
+                    echo $book['genre'] . '</br>';
+                    ?>
                     <form action="#" method="POST">
+                        <input type="hidden" name="check-out" value="<?php echo $book['id']; ?>">
                         <input id="checkout" class="btn" type="submit" name="checkout" value="Check Out">
-
                     </form>
+
                 </div>
 
             </div>
         <?php } ?>
+
     </div>
+
+
 
     </div>
 </body>

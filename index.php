@@ -18,7 +18,6 @@ mysqli_free_result($result);
 
 // Search and select the book that is looked up and replace other books on the screen
 if (isset($_POST['search'])) {
-
     // Filter search specific to category
     if (($_POST['category'])) {
 
@@ -85,7 +84,7 @@ mysqli_close($connect);
 
             <!-- Login to checkout and save books -->
             <form action="login.php" method="POST">
-                    <input class="login" type="submit" name="log-in" value="Log In">
+                <input class="login" type="submit" name="log-in" value="Log In">
             </form>
 
         </ul>
@@ -93,6 +92,11 @@ mysqli_close($connect);
     </nav>
 
     <!-- Display all books -->
+    <div class="p-5">
+        Browse for your favourtie books! If you want to check them out, log in!
+        Refresh the page to clear your searches.
+
+    </div>
     <div class="container row">
         <!-- <img src="book-images/fellow.jpg" alt="fellowship of the ring"> -->
 
@@ -100,10 +104,10 @@ mysqli_close($connect);
             <div id="each-book" class="py-2 col">
                 <div class="border p-3">
                     <?php
-                        echo $book['title'] . '</br>';
-                        echo $book['author'] . '</br>';
-                        echo $book['genre'] . '</br>';
-                        ?>
+                    echo $book['title'] . '</br>';
+                    echo $book['author'] . '</br>';
+                    echo $book['genre'] . '</br>';
+                    ?>
                 </div>
             </div>
         <?php } ?>
